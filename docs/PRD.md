@@ -100,7 +100,11 @@ is empty.
    is no same-day return to pair it with.
 5. **Headline-level FinBERT is a blunt instrument.** It was trained on financial
    phrases, not clickbait headlines, and sarcasm or forward-looking language can
-   flip a label.
+   flip a label. Observed during testing: "Net liabilities increased modestly as we
+   drew on the revolving credit facility" scored +0.905 positive, apparently on the
+   strength of "increased". A domain-specific model reduces this class of error but
+   does not remove it, which is worth stating plainly rather than claiming the
+   model understands finance language.
 6. **No causal claim.** Correlation here is descriptive, and nothing is backtested.
 
 ## Decisions log

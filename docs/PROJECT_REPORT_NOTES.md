@@ -172,7 +172,12 @@ arithmetic rather than the model.
    same-day return to pair it against.
 5. **Domain mismatch within finance.** FinBERT was fine-tuned on financial phrases
    and analyst language, not news headlines, which are written to attract clicks;
-   sarcasm and forward-looking statements can flip a label.
+   sarcasm and forward-looking statements can flip a label. A concrete failure
+   observed during testing: the sentence "Net liabilities increased modestly as we
+   drew on the revolving credit facility" was classified positive with a score of
+   +0.905, apparently because of the word "increased". The domain-specific model
+   therefore reduces, but does not eliminate, the misreading of financial
+   vocabulary that motivated the project.
 6. **No causal claim and no backtest.** The application measures association on a
    small sample; it does not test a trading strategy.
 7. **Uneven coverage.** Google News indexes US large-caps far more densely than

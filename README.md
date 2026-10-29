@@ -84,6 +84,11 @@ The tests mock the model, so they never download weights.
   evidence that sentiment predicts price.
 - **Headlines, not full articles.** Both feeds give titles, so the model scores a
   headline rather than the body of the story.
+- **FinBERT is not infallible.** It reduces this class of error rather than
+  removing it. In testing it scored *"Net liabilities increased modestly as we drew
+  on the revolving credit facility"* as **positive (+0.905)**, apparently keying on
+  "increased". The sample text in the Analyze Text tab keeps that sentence so the
+  failure is visible rather than hidden.
 - **Day-level alignment only.** Sentiment is aggregated per UTC calendar day and
   joined onto trading days, which ignores whether an article landed before or
   after the close. NSE tickers are affected most, since IST sits well ahead of UTC.
