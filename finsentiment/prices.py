@@ -44,9 +44,16 @@ def fetch_prices(ticker: str, days: int, end: date | None = None) -> pd.DataFram
 
     frame = raw.reset_index()
     date_col = "Date" if "Date" in frame.columns else frame.columns[0]
+
+    # yfinance returns the index tz-aware for some exchanges and naive for others;
+    # tz_localize(None) raises on an already-naive series, so only drop a real tz.
+    dates = pd.to_datetime(frame[date_col])
+    if getattr(dates.dt, "tz", None) is not None:
+        dates = dates.dt.tz_localize(None)
+
     out = pd.DataFrame(
         {
-            "date": pd.to_datetime(frame[date_col]).dt.tz_localize(None).dt.date,
+            "date": dates.dt.date,
             "close": pd.to_numeric(frame["Close"], errors="coerce"),
         }
     ).dropna()
