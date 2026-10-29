@@ -311,15 +311,20 @@ def render_text_tab():
     st.plotly_chart(charts.sentence_score_chart(rows), **STRETCH)
 
     ranked = row_frame.sort_values("score", ascending=False)
+    # Five each, but never the same sentence in both columns: short texts show fewer.
+    per_side = max(1, min(5, len(ranked) // 2))
+
     col_pos, col_neg = st.columns(2)
     with col_pos:
         st.markdown("#### Most positive")
-        for _, r in ranked.head(5).iterrows():
+        for _, r in ranked.head(per_side).iterrows():
             st.markdown("**%+.3f** - %s" % (r["score"], r["sentence"]))
     with col_neg:
         st.markdown("#### Most negative")
-        for _, r in ranked.tail(5).iloc[::-1].iterrows():
+        for _, r in ranked.tail(per_side).iloc[::-1].iterrows():
             st.markdown("**%+.3f** - %s" % (r["score"], r["sentence"]))
+    if per_side < 5:
+        st.caption("Showing %d each, since the text has only %d scored sentences." % (per_side, len(ranked)))
 
     with st.expander("All sentences"):
         st.dataframe(
